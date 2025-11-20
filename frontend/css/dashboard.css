@@ -8,7 +8,7 @@
     padding: 15px 25px;
 }
 
-.navBar1 .left {
+.navBar1 .navBar1_left {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -25,7 +25,7 @@
     font-size: 22px;
 }
 
-.navBar1 .right {
+.navBar1 .navBar1_right {
     color: white;
     font-size: 14px;
     opacity: 0.8;
