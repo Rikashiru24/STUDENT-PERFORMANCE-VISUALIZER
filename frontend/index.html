@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
 </head>
 <body>
 <!-- Sidebar -->
@@ -99,6 +100,17 @@
             </tr>
         </table>
     </div>
+    <!-- Grade Distribution Chart -->
+    <div class="card" style="grid-column: span 2;">
+        <h2>Grade Distribution</h2>
+        <canvas id="gradeChart"></canvas>
+    </div>
+    <!-- Performance Trend Chart -->
+    <div class="card" style="grid-column: span 2;">
+        <h2>Class Performance Trend</h2>
+        <canvas id="performanceChart"></canvas>
+    </div>
  </div>
+ <script src="/frontend/js/dashboard.js"></script>
 </body>
 </html>
