@@ -74,3 +74,37 @@
     border-color: #1a73e8;
     outline: none;
 }
+
+/* -------------------------------- */
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 20px;
+}
+
+
+/* Average Grade View */
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.card h2 {
+    margin-top: 0;
+    font-size: 20px;
+    color: #333;
+}
+.progress-bar {
+    background: #eee;
+    border-radius: 8px;
+    height: 18px;
+    overflow: hidden;
+    margin: 10px 0;
+}
+.progress {
+    height: 100%;
+    background: #1e90ff;
+    width: 70%;
+}
