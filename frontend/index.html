@@ -7,38 +7,54 @@
     <title>Dashboard</title>
 </head>
 <body>
-<!--navBar1-->
-<div class="navBar1">
-    <div class="navBar1_left">
-        <img src="/frontend/images/gwc_logo.jpg" class="logo" alt="Logo">
-        <div>
-            <h1>
-                |
-            </h1>
+<!-- Sidebar -->
+<div class="sidebar">
+    <!-- User Profile -->
+    <div class="profile">   
+        <img src="/frontend/images/man.png">
+        <p class="username">Harvin</p>
+    </div>
+    <!-- Menu Icons -->
+     <div class="menu-icons">
+        <div class="icon"><img src="/frontend/images/home.png"></div>
+        <div class="icon"><img src="/frontend/images/file.png"></div>
+     </div>
+</div>
+<!-- navBar1 and navBar2 container -->
+ <div class="navbars-container">
+        <!--navBar1-->
+    <div class="navBar1">
+        <div class="navBar1_left">
+            <img src="/frontend/images/gwc_logo.jpg" class="logo" alt="Logo">
+            <div>
+                <h1>
+                    |
+                </h1>
+            </div>
+            <h1>Class Performance Tracking Dashboard</h1>
         </div>
-        <h1>Class Performance Tracking Dashboard</h1>
+        <div class="navBar1_right">
+            Data Last Updated on | 1st Jan 2025
+        </div>
     </div>
-    <div class="navBar1_right">
-        Data Last Updated on | 1st Jan 2025
+    <!--navBar2-->
+    <div class="navBar2">
+        <div class="navBar2_left">
+            <h4>
+                Total Students <span class="colon">:</span><span class="number">200</span>
+            </h4>
+        </div>
+        <div class="navBar2_right">
+            <label for="classSelect">Select Set:</label>
+            <select id="classSelect" name="classSelect" class="custom-select">
+                <option value="">--Choose Set--</option>
+                <option value="setA">Set A</option>
+                <option value="setB">Set B</option>
+                <option value="setC">Set C</option>
+            </select>
+        </div>
     </div>
-</div>
-<!--navBar2-->
-<div class="navBar2">
-    <div class="navBar2_left">
-        <h4>
-            Total Students <span class="colon">:</span><span class="number">200</span>
-        </h4>
-    </div>
-    <div class="navBar2_right">
-        <label for="classSelect">Select Set:</label>
-        <select id="classSelect" name="classSelect" class="custom-select">
-            <option value="">--Choose Set--</option>
-            <option value="setA">Set A</option>
-            <option value="setB">Set B</option>
-            <option value="setC">Set C</option>
-        </select>
-    </div>
-</div>
+ </div>
 <!-- Average Grade View and Attendace Rate Container -->
  <div class="container">
     <!-- Average Grade View -->
@@ -50,13 +66,39 @@
         </div>
     </div>
     <!-- Attendance Rate -->
-     <div class="card">
+    <div class="card">
         <h2>Attendace Rate</h2>
         <p>Overall Attendace: <strong>92%</strong></p>
         <div class="progress-bar">
             <div class="progress" style="width: 92%; background: #32cd32"></div>
         </div>
-     </div> 
+    </div> 
+     <!-- Top Performing Students -->
+    <div class="card" style="grid-column: span 2;">
+        <h2>Top Performing Students</h2>
+        <table class="table">
+            <tr>
+                <th>Name</th>
+                <th>Grade</th>
+                <th>Status</th>
+            </tr>
+            <tr>
+                <td>Armelo Catoera</td>
+                <td>100%</td>
+                <td>Excellent</td>
+            </tr>
+            <tr>
+                <td>Joma Dela Cruz</td>
+                <td>100%</td>
+                <td>Excellent</td>
+            </tr>
+            <tr>
+                <td>Harvin Arisga</td>
+                <td>100%</td>
+                <td>Excellent</td>
+            </tr>
+        </table>
+    </div>
  </div>
 </body>
 </html>

@@ -1,11 +1,78 @@
+body {
+    margin-top: 130px;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 50px;
+    background: #dbdbdb;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 15px;
+    border-radius: 10px;
+    border: 2px solid rgb(244, 244, 244);
+}
+
+.sidebar .profile {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.sidebar .profile img {
+    width: 35px;
+    height: 35px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid white;
+    display: block;
+    margin: auto;
+}
+.sidebar .profile .username {
+    color: white;
+    font-size: 12px;
+    margin-top: 5px;
+}
+.sidebar .menu-icons {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    margin-top: 20px;
+}
+.sidebar .menu-icons .icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.sidebar .menu-icons .icon img {
+    cursor: pointer;
+    width: 24px;   
+    height: 24px;
+}
+
+/* Main Content Container */
+.navbars-container {
+    position: fixed; 
+    top: 1px;
+    left: 0;
+    width: 100%;       
+    z-index: 1000;
+    padding-right: 25px;
+    padding-left: 55px;
+    box-sizing: border-box;
+}
 .navBar1 {
     display: flex;
-    justify-content: space-between; /* left and right on same line */
+    justify-content: space-between; 
     align-items: center;
     background: white;
     color: black;
     border: 2px solid rgb(244, 244, 244);
     padding: 15px 25px;
+    border-radius: 10px 10px 0 0;
 }
 
 .navBar1 .navBar1_left {
@@ -32,17 +99,14 @@
     background-color: rgb(13, 7, 106);
     padding: 8px;
 }
-
-
-
 /*navBar2*/
-
-.navBar2 {
+.navBar2 {        
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: white;
     border: 2px solid rgb(244, 244, 244);
+    border-radius: 0 0 10px 10px;
 }
 
 .navBar2_left h4 {
@@ -80,7 +144,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
-    padding: 20px;
+    padding: 20px 20px 20px 50px;
 }
 
 
@@ -107,4 +171,19 @@
     height: 100%;
     background: #1e90ff;
     width: 70%;
+}
+
+/* Top Performing Students Table */
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.table th, .table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+.table th {
+    background: #f0f0f0;
 }
