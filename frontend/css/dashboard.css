@@ -187,3 +187,8 @@ body {
 .table th {
     background: #f0f0f0;
 }
+/* Chart Styles */
+#gradeChart, #performanceChart {
+    max-height: 300px;
+    margin-top: 15px;
+}

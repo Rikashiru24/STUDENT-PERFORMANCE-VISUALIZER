@@ -1,23 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="/frontend//css/dashboard.css">
+    <link rel="stylesheet" href="/frontend/css/dashboard.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    <!-- Chart Link -->
+    <link rel="shortcut icon" href="/frontend/public/images/favicon.ico" type="image/x-icon">
+    <!-- Script Links -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
 </head>
 <body>
 <!-- Sidebar -->
 <div class="sidebar">
     <!-- User Profile -->
     <div class="profile">   
-        <img src="/frontend/images/man.png">
+        <img src="/frontend/public/images/man.png">
         <p class="username">Harvin</p>
     </div>
     <!-- Menu Icons -->
      <div class="menu-icons">
-        <div class="icon"><img src="/frontend/images/home.png"></div>
-        <div class="icon"><img src="/frontend/images/file.png"></div>
+        <div class="icon"><img src="/frontend/public/images/home.png"></div>
+        <div class="icon"><img src="/frontend/public/images/file.png"></div>
      </div>
 </div>
 <!-- navBar1 and navBar2 container -->
@@ -25,7 +29,7 @@
         <!--navBar1-->
     <div class="navBar1">
         <div class="navBar1_left">
-            <img src="/frontend/images/gwc_logo.jpg" class="logo" alt="Logo">
+            <img src="/frontend/public/images/gwc_logo.jpg" class="logo" alt="Logo">
             <div>
                 <h1>
                     |
@@ -99,6 +103,18 @@
             </tr>
         </table>
     </div>
+    <!-- Grade Distribution Chart -->
+    <div class="card" style="grid-column: span 2;">
+        <h2>Grade Distribution</h2>
+        <canvas id="gradeChart"></canvas>
+    </div>
+    <!-- Performance Trend Chart -->
+    <div class="card" style="grid-column: span 2;">
+        <h2>Class Performance Trend</h2>
+        <canvas id="performanceChart"></canvas>
+    </div>
  </div>
+
+ <script src="js/dashboard.js"></script>
 </body>
 </html>
