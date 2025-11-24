@@ -44,7 +44,6 @@ const gradeChart = new Chart(gradeCtx, {
         }
     }
 });
-
 // Performance Trend Chart (Line Chart)
 const performanceCtx = document.getElementById('performanceChart').getContext('2d');
 const performanceChart = new Chart(performanceCtx, {
@@ -89,4 +88,10 @@ const performanceChart = new Chart(performanceCtx, {
             }
         }
     }
+});
+
+// Load Top Performing Students data dynamically when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+    // Display top performing students in the designated container
+    displayTopPerformingStudents('top_students_container');
 });

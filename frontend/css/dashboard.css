@@ -187,6 +187,35 @@ body {
 .table th {
     background: #f0f0f0;
 }
+
+/* Shimmer Loading Effect */
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+.shimmer-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.shimmer-line {
+    height: 16px;
+    background: linear-gradient(
+        90deg,
+        #f0f0f0 25%,
+        #e0e0e0 50%,
+        #f0f0f0 75%
+    );
+    background-size: 1000px 100%;
+    border-radius: 4px;
+    animation: shimmer 2s infinite;
+}
+
 /* Chart Styles */
 #gradeChart, #performanceChart {
     max-height: 300px;
