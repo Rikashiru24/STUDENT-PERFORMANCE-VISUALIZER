@@ -37,30 +37,16 @@ fetchTotalStudents();
 function fetchTopPerformingStudents() {
     return fetch("http://127.0.0.1:5000/top_performing_students")
         .then(response => {
-            // Check if the HTTP response status is successful
-            if (!response.ok) {
-                throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
-            }
-            // Parse the response body as JSON
-            return response.json();
-        })
-        .then(data => {
-            // Verify that the API request was successful
-            if (data.success) {
-                // Return the array of top performing students
-                return data.data;
-            } else {
-                // If API returned success: false, throw an error with the message
-                throw new Error(data.message || 'Failed to fetch top performing students');
-            }
+            if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+            return response.json(); // array of students
         })
         .catch(error => {
-            // Log the error for debugging purposes
             console.error('Error fetching top performing students:', error);
-            // Re-throw the error so calling code can handle it
             throw error;
         });
 }
+
+
 
 /**
  * Displays the top performing students in the DOM
@@ -139,7 +125,7 @@ function displayTopPerformingStudents(containerId = 'top_students_container') {
             students.forEach((student) => {
                 // Determine status based on grade
                 let status = '';
-                let grade = student.average_grade;
+                let grade = student.grade;
                 
                 if (grade >= 90) {
                     status = 'Excellent';
@@ -156,11 +142,10 @@ function displayTopPerformingStudents(containerId = 'top_students_container') {
                 // Create a table row for each top performing student
                 html += `
                     <tr>
-                        <td>${student.first_name} ${student.last_name}</td>
+                        <td>${student.fname} ${student.mname ? student.mname + ' ' : ''}${student.lname}</td>
                         <td>${grade.toFixed(2)}%</td>
                         <td>${status}</td>
-                    </tr>
-                `;
+                    </tr>`;
             });
             html += '</table>';
             
