@@ -90,8 +90,4 @@ const performanceChart = new Chart(performanceCtx, {
     }
 });
 
-// // Load Top Performing Students data dynamically when the page loads
-// document.addEventListener('DOMContentLoaded', () => {
-//     // Display top performing students in the designated container
-//     displayTopPerformingStudents('top_students_container');
-// });
+
