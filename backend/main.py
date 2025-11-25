@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 from database import DatabaseManagement
 from flask_cors import CORS
 
@@ -24,6 +24,7 @@ db.connect()
 #     grade = int(input("Grade: "))
 
 #     db.insert_query((fname, mname, lname, age), grade)
+
 
 # Display the Total Students
 @app.route('/total_students')

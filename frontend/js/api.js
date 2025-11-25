@@ -157,7 +157,4 @@ function displayTopPerformingStudents(containerId = 'top_students_container') {
             container.innerHTML = `<p class="error">Unable to load top performing students: ${error.message}</p>`;
         });
 }
-
-// Load Top Performing Students data dynamically when the page loads
-displayTopPerformingStudents('top_students_container');
 });

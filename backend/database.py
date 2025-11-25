@@ -69,9 +69,11 @@ class DatabaseManagement:
                 cursor.execute("""
                     SELECT s.fname, s.mname, s.lname, g.grade
                     FROM students s 
-                    INNER JOIN grades g ON s.student_id = g.student_id
+                    INNER JOIN grades g
+                    ON s.student_id = g.student_id
                 """)
-                return cursor.fetchall()
+                result = cursor.fetchall()
+                return result
         except Error as e:
             print(f"Erro Inner Join: {e}")
             return []
