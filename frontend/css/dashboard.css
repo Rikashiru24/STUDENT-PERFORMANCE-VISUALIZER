@@ -160,18 +160,6 @@ body {
     font-size: 20px;
     color: #333;
 }
-.progress-bar {
-    background: #eee;
-    border-radius: 8px;
-    height: 18px;
-    overflow: hidden;
-    margin: 10px 0;
-}
-.progress {
-    height: 100%;
-    background: #1e90ff;
-    width: 70%;
-}
 
 /* Top Performing Students Table */
 
@@ -220,4 +208,37 @@ body {
 #gradeChart, #performanceChart {
     max-height: 300px;
     margin-top: 15px;
+}
+/* Grade Average Progress Bar */
+.progress-bar {
+    width: 100%;
+    height: 20px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.progress {
+    height: 100%;
+    background-color: #4CAF50; /* Default color */
+    border-radius: 10px;
+    transition: width 0.5s ease-in-out, background-color 0.3s ease;
+}
+
+/* Color variations based on grade */
+.progress.excellent {
+    background-color: #2E7D32; /* Dark green */
+}
+
+.progress.good {
+    background-color: #4CAF50; /* Green */
+}
+
+.progress.average {
+    background-color: #FF9800; /* Orange */
+}
+
+.progress.poor {
+    background-color: #F44336; /* Red */
 }
