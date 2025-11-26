@@ -139,6 +139,32 @@ body {
     outline: none;
 }
 
+/* Navigation Buttons */
+.nav-button {
+    display: inline-block;
+    padding: 8px 16px;
+    margin-left: 10px;
+    background-color: #FF9800;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
+}
+
+.nav-button:hover {
+    background-color: #e68900;
+    box-shadow: 0 2px 6px rgba(255, 152, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+.nav-button:active {
+    transform: translateY(0);
+}
+
 /* -------------------------------- */
 .container {
     display: grid;
