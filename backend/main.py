@@ -46,7 +46,9 @@ def top_students_route():
         try:
             cursor = conn.cursor(buffered=True)
             cursor.execute("""
-                SELECT CONCAT(s.fname, ' ', s.mname, ' ', s.lname) AS full_name, g.grade
+                SELECT CONCAT(s.fname,
+                                CASE WHEN s.mname IS NOT NULL AND s.mname != '' THEN CONCAT(' ', s.mname) ELSE '' END,
+                                ' ', s.lname) AS full_name, g.grade
                 FROM students s 
                 INNER JOIN grades g ON s.student_id = g.student_id
                 ORDER BY g.grade DESC
