@@ -1,0 +1,41 @@
+
+# new_table = """CREATE TABLE IF NOT EXISTS courses (
+#                     course_id INT PRIMARY KEY AUTO_INCREMENT,
+#                     student_id INT,
+#                     grade_id INT,
+#                     FOREIGN KEY(student_id) REFERENCES students(student_id),
+#                     FOREIGN KEY(grade_id) REFERENCES grades(grade_id),
+#                     course_name VARCHAR(50)
+#                 )"""
+
+# db.create_query(new_table,)
+
+# for i in range(3):
+#     fname = input("Fname: ")
+#     mname = input("Mname: ")
+#     if mname.strip() == "":
+#         mname = None
+#     lname = input("Lname: ")
+#     age = int(input("Age: "))
+#     grade = int(input("Grade: "))
+
+#     # 1. Insert into students table
+#     sql_student = """
+#     INSERT INTO students (fname, mname, lname, age)
+#     VALUES (%s, %s, %s, %s)
+#     """
+
+#     db.create_query(sql_student, (fname, mname, lname, age))
+
+#     # get inserted student_id
+#     student_id = db.cursor.lastrowid
+
+#     # 2. Insert into grades table
+#     sql_grade = """
+#     INSERT INTO grades (student_id, grade)
+#     VALUES (%s, %s)
+#     """
+
+#     db.create_query(sql_grade, (student_id, grade))
+
+#     print(f"Inserted student_id={student_id} ({fname} {lname}) with grade {grade}")
