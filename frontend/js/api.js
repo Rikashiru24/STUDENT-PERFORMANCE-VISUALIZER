@@ -22,45 +22,45 @@ function fetchTotalStudents() {
 fetchTotalStudents();
 });
 
-// document.addEventListener("DOMContentLoaded", () => {
-//     fetch("http://127.0.0.1:5000/top_performing_students")
-//         .then(response => response.json())
-//         .then(data => {
-//             const container = document.getElementById("top_students_container");
+document.addEventListener("DOMContentLoaded", () => {
+    fetch("http://127.0.0.1:5000/top_performing_students")
+        .then(response => response.json())
+        .then(data => {
+            const container = document.getElementById("top_students_container");
 
-//             let html = `
-//                 <table class="table">
-//                     <tr>
-//                         <th>Name</th>
-//                         <th>Grade</th>
-//                         <th>Status</th>
-//                     </tr>
-//             `;
+            let html = `
+                <table class="table">
+                    <tr>
+                        <th>Name</th>
+                        <th>Grade</th>
+                        <th>Status</th>
+                    </tr>
+            `;
 
-//             data.students.forEach(student => {
-//                 const grade = student.grade;
-//                 let status = "";
+            data.students.forEach(student => {
+                const grade = student.grade;
+                let status = "";
 
-//                 if (grade >= 90) status = "Excellent";
-//                 else if (grade >= 80) status = "Very Good";
-//                 else if (grade >= 75) status = "Good";
-//                 else status = "Needs Improvement";
+                if (grade >= 90) status = "Excellent";
+                else if (grade >= 80) status = "Very Good";
+                else if (grade >= 75) status = "Good";
+                else status = "Needs Improvement";
 
-//                 html += `
-//                     <tr>
-//                         <td><div>${student.full_name}</div></td>
-//                         <td><div>${student.grade}</div></td>
-//                         <td><div>${status}</div></td>
-//                     </tr>
-//                 `;
-//             });
+                html += `
+                    <tr>
+                        <td><div>${student.full_name}</div></td>
+                        <td><div>${student.grade}</div></td>
+                        <td><div>${status}</div></td>
+                    </tr>
+                `;
+            });
 
-//             html += "</table>";
-//             container.innerHTML = html;
-//         })
-//         .catch(err => {
-//             console.error("Error loading top students:", err);
-//             document.getElementById("top_students_container").innerHTML =
-//                 "<p style='color:red;'>Failed to load students.</p>";
-//         });
-// });
+            html += "</table>";
+            container.innerHTML = html;
+        })
+        .catch(err => {
+            console.error("Error loading top students:", err);
+            document.getElementById("top_students_container").innerHTML =
+                "<p style='color:red;'>Failed to load students.</p>";
+        });
+});
