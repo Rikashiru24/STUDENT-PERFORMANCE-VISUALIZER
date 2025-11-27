@@ -27,7 +27,8 @@ def get_total_students():
         return jsonify({"total": total_students}), 200
     except Error as e:
         return jsonify({"error": str(e)}), 500
-    
+
+# API GRADE AVERAGE
 @app.route('/get_grade_average', methods=["GET"])
 def get_grade_average():
     try:
@@ -41,6 +42,9 @@ def get_grade_average():
         return jsonify({"totalAverage": total_average}), 200
     except Error as e:
         print(f"Error: {e}")
+
+# API ATTENDANCE RATE
+
     
 @app.route('/top_performing_students', methods=["GET"])
 def get_top_students():

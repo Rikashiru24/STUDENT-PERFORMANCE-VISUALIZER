@@ -1,67 +1,49 @@
 // Grade Distribution Chart (Bar Chart)
-let gradeChart = null;
-
-function loadGradeDistribution() {
-    fetch("http://127.0.0.1:5000/grade_distribution")
-        .then(response => response.json())
-        .then(data => {
-            const gradeCtx = document.getElementById('gradeChart').getContext('2d');
-            
-            if (gradeChart) {
-                gradeChart.destroy();
+const gradeCtx = document.getElementById('gradeChart').getContext('2d');
+const gradeChart = new Chart(gradeCtx, {
+    type: 'bar',
+    data: {
+        labels: ['A (90-100)', 'B (80-89)', 'C (70-79)', 'D (60-69)', 'F (Below 60)'],
+        datasets: [{
+            label: 'Number of Students',
+            data: [45, 78, 52, 18, 7],
+            backgroundColor: [
+                '#4CAF50',  // Green for A
+                '#8BC34A',  // Light Green for B
+                '#FFC107',  // Amber for C
+                '#FF9800',  // Orange for D
+                '#F44336'   // Red for F
+            ],
+            borderColor: [
+                '#45a049',
+                '#7cb342',
+                '#fbc02d',
+                '#e68900',
+                '#da190b'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+            legend: {
+                display: true,
+                position: 'top'
             }
-            
-            gradeChart = new Chart(gradeCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['A (90-100)', 'B (80-89)', 'C (70-79)', 'D (60-69)', 'F (Below 60)'],
-                    datasets: [{
-                        label: 'Number of Students',
-                        data: [data.A, data.B, data.C, data.D, data.F],
-                        backgroundColor: [
-                            '#4CAF50',  // Green for A
-                            '#8BC34A',  // Light Green for B
-                            '#FFC107',  // Amber for C
-                            '#FF9800',  // Orange for D
-                            '#F44336'   // Red for F
-                        ],
-                        borderColor: [
-                            '#45a049',
-                            '#7cb342',
-                            '#fbc02d',
-                            '#e68900',
-                            '#da190b'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top'
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Number of Students'
-                            }
-                        }
-                    }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: 'Number of Students'
                 }
-            });
-        })
-        .catch(error => {
-            console.error('Error loading grade distribution:', error);
-        });
-}
-
-document.addEventListener('DOMContentLoaded', loadGradeDistribution);
+            }
+        }
+    }
+});
 // Performance Trend Chart (Line Chart)
 const performanceCtx = document.getElementById('performanceChart').getContext('2d');
 const performanceChart = new Chart(performanceCtx, {
@@ -107,5 +89,4 @@ const performanceChart = new Chart(performanceCtx, {
         }
     }
 });
-
 

@@ -39,3 +39,43 @@
 #     db.create_query(sql_grade, (student_id, grade))
 
 #     print(f"Inserted student_id={student_id} ({fname} {lname}) with grade {grade}")
+
+
+
+
+db = get_db_connection()
+for i in range(3):
+    fname = input("Fname: ")
+    mname = input("Mname: ")
+    if mname.strip() == "":
+        mname = None
+    lname = input("Lname: ")
+    age = int(input("Age: "))
+    sub = input("Subject: ")
+    grade = int(input("Grade: "))
+    section = input("Section: ")
+    present = int(input("Present Days: "))
+    absent = int(input("Absent Days: "))
+    course = input("Course: ")
+
+    sql = "INSERT INTO students(fname, mname, lname, age) VALUES (%s, %s, %s, %s)"
+    cursor = db.cursor()
+    cursor.execute(sql,(fname, mname, lname, age))
+
+    student_id = cursor.lastrowid
+
+    sql_grade = "INSERT INTO grades (student_id, grade) VALUES (%s, %s)"
+    cursor.execute(sql_grade, (student_id, grade))
+
+    sql_subject = "INSERT INTO subjects(student_id, subject_name) VALUES(%s, %s)"
+    cursor.execute(sql_subject, (student_id, sub))
+
+    sql_section = "INSERT INTO sections(student_id, section) VALUES(%s, %s)"
+    cursor.execute(sql_section, (student_id, section))
+
+    sql_attendance = "INSERT INTO attendance(student_id, present, absent) VALUES(%s, %s, %s)"
+    cursor.execute(sql_attendance, (student_id, present, absent))
+
+    sql_course = "INSERT INTO courses(student_id, course_name) VALUES(%s, %s)"
+    cursor.execute(sql_course, (student_id, course))
+    db.commit()

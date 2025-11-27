@@ -22,6 +22,7 @@ function fetchTotalStudents() {
 fetchTotalStudents();
 });
 
+// API Grade Average
 document.addEventListener('DOMContentLoaded', () => {
   const totalGradeAverage = document.getElementById('gradeAverage');
   const progressBar = document.querySelector('.progress');
@@ -68,6 +69,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   fetchGradeAverage();
 });
+
+// API Attendance Rate
+
+
 
 document.addEventListener("DOMContentLoaded", () => {
     fetch("http://127.0.0.1:5000/top_performing_students")
