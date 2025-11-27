@@ -14,7 +14,7 @@ def get_db_connection():
         password="017HarVin20",
         database="StudentDB"
     )
-
+        
 @app.route('/total_students', methods=["GET"])
 def get_total_students():
     try:
@@ -47,16 +47,19 @@ def get_grade_average():
 # API ATTENDANCE RATE
 @app.route('/attendance_rate', methods=["GET"])
 def get_attendance_rate():
-    db = get_db_connection()
-    cursor = db.cursor()
-    cursor.execute("""SELECT ROUND(AVG(a.present / (a.present + a.absent)) * 100, 2) AS overall_attendance_rate_percentage
-                   FROM attendance a
-                   """)
-    result = cursor.fetchone()
-    cursor.close()
-    db.close()
-    attendance_rate = result[0] if result else 0
-    return jsonify({"attendance": attendance_rate}), 200
+    try:
+        db = get_db_connection()
+        cursor = db.cursor()
+        cursor.execute("""SELECT ROUND(AVG(a.present / (a.present + a.absent)) * 100, 2) AS overall_attendance_rate_percentage
+                    FROM attendance a
+                    """)
+        result = cursor.fetchone()
+        cursor.close()
+        db.close()
+        attendance_rate = result[0] if result else 0
+        return jsonify({"attendance": attendance_rate}), 200
+    except Error as e:
+        print(f"Erro fetching attendace rate: {e}")
     
 @app.route('/top_performing_students', methods=["GET"])
 def get_top_students():
@@ -80,7 +83,7 @@ def get_top_students():
         print(f"Error: {e}")
         return jsonify({"error": "Database query failed"}), 500
 
-@app.route('/api/grade_distribution')
+@app.route('/api/grade_distribution', methods=["GET"])
 def grade_distribution():
     """API for grade distribution using actual database data"""
     try:
