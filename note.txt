@@ -79,3 +79,122 @@ for i in range(3):
     sql_course = "INSERT INTO courses(student_id, course_name) VALUES(%s, %s)"
     cursor.execute(sql_course, (student_id, course))
     db.commit()
+
+
+# Performance Trend API - Forward Looking (Current Month + Next 5 Months)
+@app.route('/api/performance_trend', methods=["GET"])
+def performance_trend():
+    """API for performance trend chart data - forward looking"""
+    try:
+        db = get_db_connection()
+        cursor = db.cursor(dictionary=True)
+        
+        # Generate next 6 months starting from current month
+        months = []
+        current_date = datetime.now()
+        
+        for i in range(6):
+            target_date = current_date + timedelta(days=30*i)
+            month_name = target_date.strftime('%B')
+            months.append(month_name)
+        
+        print("Generated months (forward looking):", months)
+        
+        # Get current performance data
+        cursor.execute("SELECT AVG(grade) as avg_grade FROM grades")
+        current_grade_result = cursor.fetchone()
+        current_class_avg = round(float(current_grade_result['avg_grade']), 2) if current_grade_result and current_grade_result['avg_grade'] else 75
+        
+        cursor.execute("SELECT AVG((present / (present + absent)) * 100) as avg_attendance FROM attendance")
+        current_attendance_result = cursor.fetchone()
+        current_attendance_rate = round(float(current_attendance_result['avg_attendance']), 2) if current_attendance_result and current_attendance_result['avg_attendance'] else 85
+        
+        print(f"Current performance - Grade: {current_class_avg}%, Attendance: {current_attendance_rate}%")
+        
+        # Create forward-looking trends with realistic goals
+        class_averages = []
+        attendance_rates = []
+        
+        # Set realistic improvement goals
+        grade_goal = min(100, current_class_avg + 10)  # Aim for 10% improvement max
+        attendance_goal = min(100, current_attendance_rate + 8)  # Aim for 8% improvement max
+        
+        for i, month in enumerate(months):
+            progress = i / 5.0  # 0 to 1 over 6 months
+            
+            # Calculate grade trend - gradual improvement toward goal
+            if i == 0:
+                # Current month - use actual data
+                class_avg = current_class_avg
+            else:
+                # Future months - gradual improvement
+                class_avg = current_class_avg + (grade_goal - current_class_avg) * progress
+            
+            # Calculate attendance trend - gradual improvement
+            if i == 0:
+                # Current month - use actual data
+                attendance = current_attendance_rate
+            else:
+                # Future months - gradual improvement
+                attendance = current_attendance_rate + (attendance_goal - current_attendance_rate) * progress
+            
+            # Add some realistic variation (not perfectly linear)
+            if i > 0:
+                # Small random variation to make it look more natural
+                import random
+                class_avg += random.uniform(-2, 2)
+                attendance += random.uniform(-1, 1)
+            
+            # Ensure reasonable bounds
+            class_avg = max(40, min(100, round(class_avg, 2)))
+            attendance = max(40, min(100, round(attendance, 2)))
+            
+            class_averages.append(class_avg)
+            attendance_rates.append(attendance)
+        
+        print("Forward-looking data - Months:", months)
+        print("Forward-looking data - Class averages:", class_averages)
+        print("Forward-looking data - Attendance rates:", attendance_rates)
+        
+        cursor.close()
+        db.close()
+        
+        return jsonify({
+            'success': True,
+            'data': {
+                'labels': months,
+                'datasets': [
+                    {
+                        'label': 'Class Average (Projected)',
+                        'data': class_averages,
+                        'borderColor': '#2196F3',
+                        'backgroundColor': 'rgba(33, 150, 243, 0.1)',
+                        'tension': 0.3,
+                        'fill': True,
+                        'borderWidth': 2,
+                        'pointBackgroundColor': '#2196F3'
+                    },
+                    {
+                        'label': 'Attendance Rate (Projected)',
+                        'data': attendance_rates,
+                        'borderColor': '#4CAF50',
+                        'backgroundColor': 'rgba(76, 175, 80, 0.1)',
+                        'tension': 0.3,
+                        'fill': True,
+                        'borderWidth': 2,
+                        'pointBackgroundColor': '#4CAF50'
+                    }
+                ]
+            },
+            'metadata': {
+                'current_grade': current_class_avg,
+                'current_attendance': current_attendance_rate,
+                'grade_goal': grade_goal,
+                'attendance_goal': attendance_goal,
+                'timeframe': 'next_6_months'
+            }
+        })
+        
+    except Exception as e:
+        print(f"Error in performance_trend: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500

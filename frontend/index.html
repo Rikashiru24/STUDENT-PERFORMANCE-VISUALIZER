@@ -66,9 +66,9 @@
     <!-- Average Grade View -->
     <div class="card">
         <h2>Average Grade view</h2>
-        <p>Overall Section Average: <strong id="gradeAverage"></strong><strong>%</strong></p>
+        <p>Overall Class Average: <strong id="gradeAverage"></strong><strong>%</strong></p>
         <div class="progress-bar">
-            <div class="progress"></div>
+            <div class="grade-progress"></div>
         </div>
     </div>
     <!-- Attendance Rate -->
@@ -76,7 +76,7 @@
         <h2>Attendance Rate</h2>
         <p>Overall Attendance: <strong id="attendanceRate"></strong><strong>%</strong></p>
         <div class="progress-bar">
-            <div class="progress" style="width: 92%; background: #32cd32"></div>
+            <div class="attendance-progress"></div>
         </div>
     </div> 
      <!-- Top Performing Students -->
@@ -91,19 +91,29 @@
                     <th>Status</th>
                 </tr>
                 <tr>
-                    <td><div></div></td>
-                    <td><div></div></td>
-                    <td><div></div></td>
+                    <td><div class="shimmer-line"></div></td>
+                    <td><div class="shimmer-line"></div></td>
+                    <td><div class="shimmer-line"></div></td>
                 </tr>
                 <tr>
-                    <td><div></div></td>
-                    <td><div></div></td>
-                    <td><div></div></td>
+                    <td><div class="shimmer-line"></div></td>
+                    <td><div class="shimmer-line"></div></td>
+                    <td><div class="shimmer-line"></div></td>
                 </tr>
                 <tr>
-                    <td><div></div></td>
-                    <td><div></div></td>
-                    <td><div></div></td>
+                    <td><div class="shimmer-line"></div></td>
+                    <td><div class="shimmer-line"></div></td>
+                    <td><div class="shimmer-line"></div></td>
+                </tr>
+                <tr>
+                    <td><div class="shimmer-line"></div></td>
+                    <td><div class="shimmer-line"></div></td>
+                    <td><div class="shimmer-line"></div></td>
+                </tr>
+                <tr>
+                    <td><div class="shimmer-line"></div></td>
+                    <td><div class="shimmer-line"></div></td>
+                    <td><div class="shimmer-line"></div></td>
                 </tr>
             </table>
         </div>
@@ -111,12 +121,17 @@
     <!-- Grade Distribution Chart -->
     <div class="card" style="grid-column: span 2;">
         <h2>Grade Distribution</h2>
-        <canvas id="gradeChart"></canvas>
+        <div id="gradeChartContainer">
+            <canvas id="gradeChart"></canvas>
+        </div>
     </div>
+
     <!-- Performance Trend Chart -->
     <div class="card" style="grid-column: span 2;">
         <h2>Class Performance Trend</h2>
-        <canvas id="performanceChart"></canvas>
+        <div id="performanceChartContainer">
+            <canvas id="performanceChart"></canvas>
+        </div>
     </div>
  </div>
 

@@ -1,92 +1,85 @@
 // Grade Distribution Chart (Bar Chart)
-const gradeCtx = document.getElementById('gradeChart').getContext('2d');
-const gradeChart = new Chart(gradeCtx, {
-    type: 'bar',
-    data: {
-        labels: ['A (90-100)', 'B (80-89)', 'C (70-79)', 'D (60-69)', 'F (Below 60)'],
-        datasets: [{
-            label: 'Number of Students',
-            data: [45, 78, 52, 18, 7],
-            backgroundColor: [
-                '#4CAF50',  // Green for A
-                '#8BC34A',  // Light Green for B
-                '#FFC107',  // Amber for C
-                '#FF9800',  // Orange for D
-                '#F44336'   // Red for F
-            ],
-            borderColor: [
-                '#45a049',
-                '#7cb342',
-                '#fbc02d',
-                '#e68900',
-                '#da190b'
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: true,
-        plugins: {
-            legend: {
-                display: true,
-                position: 'top'
-            }
-        },
-        scales: {
-            y: {
-                beginAtZero: true,
-                title: {
-                    display: true,
-                    text: 'Number of Students'
+async function initializeGradeChart() {
+    try {
+        const response = await fetch('http://127.0.0.1:5000/api/grade_distribution');
+        const result = await response.json();
+        
+        if (!result.success) {
+            throw new Error(result.error);
+        }
+        
+        const gradeCtx = document.getElementById('gradeChart').getContext('2d');
+        const gradeChart = new Chart(gradeCtx, {
+            type: 'bar',
+            data: result.data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Number of Students'
+                        }
+                    }
                 }
             }
-        }
+        });
+    } catch (error) {
+        console.error('Error loading grade distribution chart:', error);
+        document.getElementById('gradeChart').innerHTML = 
+            '<p style="color: red; text-align: center;">Failed to load grade distribution</p>';
     }
-});
-// Performance Trend Chart (Line Chart)
-const performanceCtx = document.getElementById('performanceChart').getContext('2d');
-const performanceChart = new Chart(performanceCtx, {
-    type: 'line',
-    data: {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-        datasets: [
-            {
-                label: 'Class Average',
-                data: [78, 80, 82, 85, 87, 88],
-                borderColor: '#2196F3',
-                backgroundColor: 'rgba(33, 150, 243, 0.1)',
-                tension: 0.3,
-                fill: true,
-                borderWidth: 2
-            },
-            {
-                label: 'Attendance Rate',
-                data: [88, 89, 91, 92, 93, 92],
-                borderColor: '#4CAF50',
-                backgroundColor: 'rgba(76, 175, 80, 0.1)',
-                tension: 0.3,
-                fill: true,
-                borderWidth: 2
-            }
-        ]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: true,
-        plugins: {
-            legend: {
-                display: true,
-                position: 'top'
-            }
-        },
-        scales: {
-            y: {
-                beginAtZero: true,
-                min: 0,
-                max: 100
-            }
-        }
-    }
-});
+}
 
+// Performance Trend Chart (Line Chart)
+async function initializePerformanceChart() {
+    try {
+        const response = await fetch('http://127.0.0.1:5000/api/performance_trend');
+        const result = await response.json();
+        
+        if (!result.success) {
+            throw new Error(result.error);
+        }
+        
+        const performanceCtx = document.getElementById('performanceChart').getContext('2d');
+        const performanceChart = new Chart(performanceCtx, {
+            type: 'line',
+            data: result.data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        min: 0,
+                        max: 100
+                    }
+                }
+            }
+        });
+    } catch (error) {
+        console.error('Error loading performance trend chart:', error);
+        document.getElementById('performanceChart').innerHTML = 
+            '<p style="color: red; text-align: center;">Failed to load performance trend</p>';
+    }
+}
+
+// Initialize all charts when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    initializeGradeChart();
+    initializePerformanceChart();
+});

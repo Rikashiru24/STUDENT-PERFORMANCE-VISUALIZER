@@ -192,6 +192,7 @@ body {
 .table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed;
 }
 .table th, .table td {
     padding: 10px;
@@ -245,7 +246,7 @@ body {
     margin-top: 10px;
 }
 
-.progress {
+.grade-progress {
     height: 100%;
     background-color: #4CAF50; /* Default color */
     border-radius: 10px;
@@ -253,18 +254,50 @@ body {
 }
 
 /* Color variations based on grade */
-.progress.excellent {
+.grade-progress.excellent {
     background-color: #2E7D32; /* Dark green */
 }
 
-.progress.good {
+.grade-progress.good {
     background-color: #4CAF50; /* Green */
 }
 
-.progress.average {
+.grade-progress.average {
     background-color: #FF9800; /* Orange */
 }
 
-.progress.poor {
+.grade-progress.poor {
+    background-color: #F44336; /* Red */
+}
+
+/* Attendance Progress Bar */
+.grade-progress {
+    height: 100%;
+    background-color: #4CAF50; /* Default color */
+    border-radius: 10px;
+    transition: width 0.5s ease-in-out, background-color 0.3s ease;
+}
+
+/* Color variations based on grade */
+.attendance-progress {
+    height: 100%;
+    background-color: #4CAF50; /* Default color */
+    border-radius: 10px;
+    transition: width 0.5s ease-in-out, background-color 0.3s ease;
+}
+
+.attendance-progress.excellent {
+    background-color: #2E7D32; /* Dark green */
+}
+
+.attendance-progress.good {
+    background-color: #4CAF50; /* Green */
+}
+
+.attendance-progress.average {
+    background-color: #FF9800; /* Orange */
+}
+
+.attendance-progress.poor {
     background-color: #F44336; /* Red */
 }
