@@ -3,21 +3,18 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 from mysql.connector import Error
 import mysql.connector
-from dotenv import load_dotenv
-import os
 
-# Load environment variables from .env file
-load_dotenv()
+
 
 app = Flask(__name__)
 CORS(app)
 
 def get_db_connection():
-    return mysql.connector.connect(
-        host=os.getenv("DB_HOST"),
-        user=os.getenv("DB_USER"),
-        password=os.getenv("DB_PASSWORD"),
-        database=os.getenv("DB_NAME")
+    return mysql.connector.connect( 
+        host="localhost",
+        user="root",
+        password="017HarVin20",
+        database="StudentDB"
     )
         
 @app.route('/total_students', methods=["GET"])
