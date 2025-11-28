@@ -5,7 +5,6 @@ from mysql.connector import Error
 import mysql.connector
 
 
-
 app = Flask(__name__)
 CORS(app)
 
