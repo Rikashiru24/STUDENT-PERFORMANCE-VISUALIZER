@@ -76,9 +76,27 @@ body {
 .students-form-container {
     padding: 0 20px 0 20px;
 }
+.students-form-container button {
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 10px;
+    width: 5px;
+    margin-top: 0;
+    color: blue;
+    background: rgb(255, 255, 255);
+    border-radius: 0 0 10px 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.add-btn {
+    display: flex;
+    justify-content: end;
+}
 .card-students {
     background: rgb(255, 255, 255);
-    border-radius: 10px;
+    border-radius: 10px 10px 0 10px;
     padding: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
