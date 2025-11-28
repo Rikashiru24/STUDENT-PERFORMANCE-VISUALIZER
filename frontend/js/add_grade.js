@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Redirect to dashboard after 2 seconds
                 setTimeout(() => {
-                    window.location.href = '/frontend/index.html';
+                    window.location.href = 'index.html';
                 }, 2000);
             } else {
                 showError(data.error || 'Failed to add grade');
