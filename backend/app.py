@@ -139,200 +139,237 @@ def grade_distribution():
         return jsonify({'success': False, 'error': str(e)}), 500
     
 # Performance Trend API - Past to Present (No Future Projections)
-@app.route('/api/performance_trend', methods=["GET"])
+@app.route('/api/performance_trend', methods=['GET'])
 def performance_trend():
-    """API for performance trend chart data - past to present only"""
     try:
         db = get_db_connection()
         cursor = db.cursor(dictionary=True)
         
-        # Generate last 6 months up to current month
-        months = []
-        month_data = {}
-        current_date = datetime.now()
-        
-        for i in range(5, -1, -1):  # Last 6 months including current
-            target_date = current_date - timedelta(days=30*i)
-            month_name = target_date.strftime('%B')
-            year_month = target_date.strftime('%Y-%m')
-            months.append(month_name)
-            month_data[year_month] = {
-                'month_name': month_name,
-                'class_avg': 0,
-                'attendance_rate': 0,
-                'has_data': False
-            }
-        
-        print("Generated month structure (past to present):", month_data)
-        
-        # Get current performance data (November)
-        cursor.execute("SELECT AVG(grade) as avg_grade FROM grades")
-        current_grade_result = cursor.fetchone()
-        current_class_avg = round(float(current_grade_result['avg_grade']), 2) if current_grade_result and current_grade_result['avg_grade'] else 75
-        
-        cursor.execute("SELECT AVG((present / (present + absent)) * 100) as avg_attendance FROM attendance")
-        current_attendance_result = cursor.fetchone()
-        current_attendance_rate = round(float(current_attendance_result['avg_attendance']), 2) if current_attendance_result and current_attendance_result['avg_attendance'] else 85
-        
-        print(f"Current November performance - Grade: {current_class_avg}%, Attendance: {current_attendance_rate}%")
-        
-        # Check for real historical data
+        # Get all unique dates with data from both tables
         cursor.execute("""
-            SELECT DATE_FORMAT(created_at, '%Y-%m') as month,
-                   AVG(grade) as average_grade
-            FROM grades 
-            WHERE created_at >= DATE_SUB(NOW(), INTERVAL 6 MONTH)
-            GROUP BY DATE_FORMAT(created_at, '%Y-%m')
-            ORDER BY month
+            SELECT DISTINCT DATE(created_at) as date
+            FROM (
+                SELECT created_at FROM grades 
+                UNION ALL 
+                SELECT created_at FROM attendance
+            ) as all_dates
+            ORDER BY date
         """)
-        grade_results = cursor.fetchall()
-        print("Real grade data found:", grade_results)
+        dates_with_data = [row['date'] for row in cursor.fetchall()]
         
-        cursor.execute("""
-            SELECT DATE_FORMAT(created_at, '%Y-%m') as month,
-                   AVG((present / (present + absent)) * 100) as attendance_rate
-            FROM attendance 
-            WHERE created_at >= DATE_SUB(NOW(), INTERVAL 6 MONTH)
-            GROUP BY DATE_FORMAT(created_at, '%Y-%m')
-            ORDER BY month
-        """)
-        attendance_results = cursor.fetchall()
-        print("Real attendance data found:", attendance_results)
+        print(f"Dates with data: {dates_with_data}")
         
-        # Process real data if any exists
-        has_real_historical_data = False
+        if not dates_with_data:
+            # No data found
+            cursor.close()
+            db.close()
+            return jsonify({
+                'success': True,
+                'data': {
+                    'labels': [],
+                    'datasets': [
+                        {
+                            'label': 'Class Average',
+                            'data': [],
+                            'borderColor': '#2196F3',
+                            'backgroundColor': 'rgba(33, 150, 243, 0.1)',
+                            'tension': 0.3,
+                            'fill': True,
+                            'borderWidth': 2
+                        },
+                        {
+                            'label': 'Attendance Rate',
+                            'data': [],
+                            'borderColor': '#4CAF50',
+                            'backgroundColor': 'rgba(76, 175, 80, 0.1)',
+                            'tension': 0.3,
+                            'fill': True,
+                            'borderWidth': 2
+                        }
+                    ]
+                }
+            })
         
-        for result in grade_results:
-            month_key = result['month']
-            if month_key in month_data:
-                avg_grade = float(result['average_grade']) if result['average_grade'] else 0
-                month_data[month_key]['class_avg'] = round(avg_grade, 2)
-                month_data[month_key]['has_data'] = True
-                has_real_historical_data = True
-                print(f"Real grade data for {month_key}: {avg_grade}")
+        # Check if all data is from the same month
+        first_date = dates_with_data[0]
+        last_date = dates_with_data[-1]
+        same_month = (first_date.year == last_date.year and first_date.month == last_date.month)
         
-        for result in attendance_results:
-            month_key = result['month']
-            if month_key in month_data:
-                attendance_rate = float(result['attendance_rate']) if result['attendance_rate'] else 0
-                month_data[month_key]['attendance_rate'] = round(attendance_rate, 2)
-                month_data[month_key]['has_data'] = True
-                has_real_historical_data = True
-                print(f"Real attendance data for {month_key}: {attendance_rate}")
-        
-        # Build the historical trend
-        class_averages = []
-        attendance_rates = []
-        final_months = []
-        
-        # If we have real historical data, use it
-        if has_real_historical_data:
-            print("Using real historical data where available")
-            for month in months:
-                month_found = False
-                for month_key, data in month_data.items():
-                    if data['month_name'] == month and data['has_data']:
-                        final_months.append(month)
-                        class_averages.append(data['class_avg'])
-                        attendance_rates.append(data['attendance_rate'])
-                        month_found = True
-                        break
-                
-                if not month_found:
-                    # Fill gaps with calculated historical values
-                    final_months.append(month)
-                    month_index = months.index(month)
-                    
-                    # Create realistic historical progression leading to current November data
-                    if month == 'November':  # Current month
-                        class_avg = current_class_avg
-                        attendance = current_attendance_rate
-                    else:
-                        # Calculate how many months before November
-                        months_before_nov = months.index('November') - month_index
-                        
-                        # Start from lower values and improve toward November
-                        improvement_factor = months_before_nov * 0.15  # 15% improvement per month
-                        class_avg = current_class_avg * (1 - improvement_factor)
-                        attendance = current_attendance_rate * (1 - improvement_factor * 0.8)
-                    
-                    class_avg = max(60, min(100, round(class_avg, 2)))
-                    attendance = max(70, min(100, round(attendance, 2)))
-                    
-                    class_averages.append(class_avg)
-                    attendance_rates.append(attendance)
-        
+        if same_month and len(dates_with_data) > 1:
+            # Multiple days in same month - show daily view
+            return get_daily_view(cursor, db, dates_with_data)
         else:
-            # No real historical data - create realistic past progression
-            print("No real historical data - creating realistic past progression")
-            
-            for month in months:
-                final_months.append(month)
-                month_index = months.index(month)
-                
-                # Create realistic improvement over time
-                if month == 'November':  # Current month - use actual data
-                    class_avg = current_class_avg
-                    attendance = current_attendance_rate
-                else:
-                    # Calculate progression from past to current
-                    progress = month_index / (len(months) - 1)  # 0 to 1 from first to current month
-                    
-                    # Start from reasonable lower values and improve
-                    start_grade = max(60, current_class_avg - 12)
-                    start_attendance = max(75, current_attendance_rate - 10)
-                    
-                    class_avg = start_grade + (current_class_avg - start_grade) * progress
-                    attendance = start_attendance + (current_attendance_rate - start_attendance) * progress
-                
-                class_avg = max(60, min(100, round(class_avg, 2)))
-                attendance = max(70, min(100, round(attendance, 2)))
-                
-                class_averages.append(class_avg)
-                attendance_rates.append(attendance)
-        
-        print("Final timeline - Months:", final_months)
-        print("Final data - Class averages:", class_averages)
-        print("Final data - Attendance rates:", attendance_rates)
-        
-        cursor.close()
-        db.close()
-        
-        return jsonify({
-            'success': True,
-            'data': {
-                'labels': final_months,
-                'datasets': [
-                    {
-                        'label': 'Class Average',
-                        'data': class_averages,
-                        'borderColor': '#2196F3',
-                        'backgroundColor': 'rgba(33, 150, 243, 0.1)',
-                        'tension': 0.3,
-                        'fill': True,
-                        'borderWidth': 2
-                    },
-                    {
-                        'label': 'Attendance Rate',
-                        'data': attendance_rates,
-                        'borderColor': '#4CAF50',
-                        'backgroundColor': 'rgba(76, 175, 80, 0.1)',
-                        'tension': 0.3,
-                        'fill': True,
-                        'borderWidth': 2
-                    }
-                ]
-            },
-            'metadata': {
-                'current_grade': current_class_avg,
-                'current_attendance': current_attendance_rate,
-                'timeframe': 'past_to_present'
-            }
-        })
+            # Single day or multiple months - show monthly view
+            return get_monthly_view(cursor, db, dates_with_data)
         
     except Exception as e:
         print(f"Error in performance_trend: {e}")
         return jsonify({'success': False, 'error': str(e)}), 500
+
+def get_daily_view(cursor, db, dates_with_data):
+    """Show daily data for current month"""
+    # Get daily grade averages
+    daily_grade_query = """
+    SELECT 
+        DATE(created_at) as date,
+        AVG(grade) as average_grade
+    FROM grades 
+    GROUP BY DATE(created_at)
+    ORDER BY date
+    """
+    cursor.execute(daily_grade_query)
+    grade_results = {row['date'].strftime('%Y-%m-%d'): round(float(row['average_grade']), 2) for row in cursor.fetchall()}
+    
+    # Get daily attendance rates
+    daily_attendance_query = """
+    SELECT 
+        DATE(created_at) as date,
+        AVG((present / (present + absent)) * 100) as attendance_rate
+    FROM attendance 
+    GROUP BY DATE(created_at)
+    ORDER BY date
+    """
+    cursor.execute(daily_attendance_query)
+    attendance_results = {row['date'].strftime('%Y-%m-%d'): round(float(row['attendance_rate']), 2) for row in cursor.fetchall()}
+    
+    print(f"Daily grade data: {grade_results}")
+    print(f"Daily attendance data: {attendance_results}")
+    
+    # Build the final data arrays
+    labels = []
+    class_averages = []
+    attendance_rates = []
+    
+    for date in dates_with_data:
+        date_str = date.strftime('%Y-%m-%d')
+        # Convert to "Nov 27" format
+        labels.append(date.strftime('%b %d'))
+        
+        # Add grade data if available for this date
+        class_averages.append(grade_results.get(date_str))
+        
+        # Add attendance data if available for this date
+        attendance_rates.append(attendance_results.get(date_str))
+    
+    print("Daily labels:", labels)
+    print("Daily class averages:", class_averages)
+    print("Daily attendance rates:", attendance_rates)
+    
+    cursor.close()
+    db.close()
+    
+    return jsonify({
+        'success': True,
+        'data': {
+            'labels': labels,
+            'datasets': [
+                {
+                    'label': 'Daily Class Average',
+                    'data': class_averages,
+                    'borderColor': '#2196F3',
+                    'backgroundColor': 'rgba(33, 150, 243, 0.1)',
+                    'tension': 0.3,
+                    'fill': True,
+                    'borderWidth': 2,
+                    'pointBackgroundColor': '#2196F3'
+                },
+                {
+                    'label': 'Daily Attendance Rate',
+                    'data': attendance_rates,
+                    'borderColor': '#4CAF50',
+                    'backgroundColor': 'rgba(76, 175, 80, 0.1)',
+                    'tension': 0.3,
+                    'fill': True,
+                    'borderWidth': 2,
+                    'pointBackgroundColor': '#4CAF50'
+                }
+            ]
+        }
+    })
+
+def get_monthly_view(cursor, db, dates_with_data):
+    """Show monthly data"""
+    # Get all unique months with data
+    cursor.execute("""
+        SELECT DISTINCT DATE_FORMAT(created_at, '%Y-%m') as month
+        FROM (
+            SELECT created_at FROM grades 
+            UNION ALL 
+            SELECT created_at FROM attendance
+        ) as all_dates
+        ORDER BY month
+    """)
+    months_with_data = [row['month'] for row in cursor.fetchall()]
+    
+    # Get monthly grade averages
+    monthly_grade_query = """
+    SELECT 
+        DATE_FORMAT(created_at, '%Y-%m') as month,
+        AVG(grade) as average_grade
+    FROM grades 
+    GROUP BY DATE_FORMAT(created_at, '%Y-%m')
+    ORDER BY month
+    """
+    cursor.execute(monthly_grade_query)
+    grade_results = {row['month']: round(float(row['average_grade']), 2) for row in cursor.fetchall()}
+    
+    # Get monthly attendance rates
+    monthly_attendance_query = """
+    SELECT 
+        DATE_FORMAT(created_at, '%Y-%m') as month,
+        AVG((present / (present + absent)) * 100) as attendance_rate
+    FROM attendance 
+    GROUP BY DATE_FORMAT(created_at, '%Y-%m')
+    ORDER BY month
+    """
+    cursor.execute(monthly_attendance_query)
+    attendance_results = {row['month']: round(float(row['attendance_rate']), 2) for row in cursor.fetchall()}
+    
+    # Build the final data arrays
+    labels = []
+    class_averages = []
+    attendance_rates = []
+    
+    for month in months_with_data:
+        # Convert "2025-11" to "November 2025"
+        month_date = datetime.strptime(month, '%Y-%m')
+        labels.append(month_date.strftime('%B %Y'))
+        
+        # Add grade data if available for this month
+        class_averages.append(grade_results.get(month))
+        
+        # Add attendance data if available for this month
+        attendance_rates.append(attendance_results.get(month))
+    
+    cursor.close()
+    db.close()
+    
+    return jsonify({
+        'success': True,
+        'data': {
+            'labels': labels,
+            'datasets': [
+                {
+                    'label': 'Class Average',
+                    'data': class_averages,
+                    'borderColor': '#2196F3',
+                    'backgroundColor': 'rgba(33, 150, 243, 0.1)',
+                    'tension': 0.3,
+                    'fill': True,
+                    'borderWidth': 2
+                },
+                {
+                    'label': 'Attendance Rate',
+                    'data': attendance_rates,
+                    'borderColor': '#4CAF50',
+                    'backgroundColor': 'rgba(76, 175, 80, 0.1)',
+                    'tension': 0.3,
+                    'fill': True,
+                    'borderWidth': 2
+                }
+            ]
+        }
+    })
     
 if __name__ == "__main__":
     app.run(debug=True)
