@@ -139,6 +139,7 @@ def grade_distribution():
         return jsonify({'success': False, 'error': str(e)}), 500
     
 # Performance Trend API - Past to Present (No Future Projections)
+# nice
 @app.route('/api/performance_trend', methods=['GET'])
 def performance_trend():
     try:
