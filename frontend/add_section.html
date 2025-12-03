@@ -57,6 +57,7 @@
             <div class="header-item tooltip-container">
               Middle Name (Optional)
             </div>
+            <div class="header-item tooltip-container">Birthdate</div>
             <div class="header-item age-header tooltip-container">Age</div>
             <div class="header-item"></div>
           </div>
@@ -82,13 +83,20 @@
                 title="Enter student's middle name (optional)"
               />
               <input
+                type="date"
+                class="birthdate-input"
+                required
+                title="Select student's birthdate"
+              />
+              <input
                 type="number"
-                placeholder="16"
+                placeholder="--"
                 class="age-input"
                 min="1"
                 max="99"
                 required
-                title="Enter student's age (1-99)"
+                readonly
+                title="Age (auto-calculated from birthdate)"
               />
               <div></div>
             </div>
