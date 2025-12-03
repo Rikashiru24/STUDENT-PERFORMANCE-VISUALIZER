@@ -29,6 +29,7 @@
           </div>
           <input
             type="text"
+            id="section-name"
             placeholder="e.g., Section A"
             title="Enter section name"
           />
@@ -40,6 +41,7 @@
           </div>
           <input
             type="text"
+            id="subject-name"
             placeholder="e.g., MATH"
             title="Enter subject name"
           />
@@ -67,18 +69,21 @@
             <div class="student-row default-row">
               <input
                 type="text"
+                class="last-name"
                 placeholder="e.g., Dela Cruz"
                 required
                 title="Enter student's last name"
               />
               <input
                 type="text"
+                class="first-name"
                 placeholder="e.g., Juan"
                 required
                 title="Enter student's first name"
               />
               <input
                 type="text"
+                class="middle-name"
                 placeholder="e.g., Reyes"
                 title="Enter student's middle name (optional)"
               />
@@ -110,6 +115,13 @@
             <span class="tooltip tooltip-left">Add another student</span>
           </button>
         </div>
+      </div>
+
+      <!-- Submit Button Container -->
+      <div class="submit-container" id="submit-container">
+        <button class="submit-btn tooltip-container" id="submit-btn">
+          Create Section
+        </button>
       </div>
     </div>
 

@@ -303,3 +303,53 @@ body {
   font-size: 16px;
   font-weight: 300;
 }
+
+/* Submit Button Container */
+.submit-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+}
+
+.submit-container.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.submit-btn {
+  background: rgb(13, 7, 106);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 40px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(13, 7, 106, 0.3);
+  position: relative;
+}
+
+.submit-btn:hover {
+  background: rgb(22, 12, 159);
+}
+
+.submit-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(13, 7, 106, 0.3);
+}
+
+.submit-btn:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
