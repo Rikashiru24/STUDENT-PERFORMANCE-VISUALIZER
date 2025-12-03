@@ -1,67 +1,110 @@
+<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Logo Link -->
-    <link rel="shortcut icon" href="public/favicon.ico" type="image/x-icon">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="shortcut icon" href="public/favicon.ico" type="image/x-icon" />
     <title>Add Section</title>
-    <link rel="stylesheet" href="css/add_section.css">
-</head>
-<body>
-      <div class="page-container">
-        <div class="navbars-add-section-container">
-            <!--navBar2-->
-            <div class="navbars">
-                <div class="navbar_left">
-                    <h4>
-                        Add New Section
-                    </h4>
-                </div>
-                <div class="navbar_right">
-                <a href="/frontend/index.html" class="nav-button">Back to Dashboard</a>
-                </div>
-            </div>
+    <link rel="stylesheet" href="css/add_section.css" />
+  </head>
+  <body>
+    <div class="navbars-add-section-container">
+      <div class="navbars">
+        <div class="navbar_left">
+          <h4>Add New Section</h4>
         </div>
-        <div class="section-form-container">
-            <div class="card">
-                <h2>Section</h2>
-                <h4>Section Name</h4>
-                <input type="text" placeholder="e.g., Section A">  
-            </div>
-            <div class="card">
-                <h2>Subject</h2>
-                <h4>Subject Name</h4>
-                <input type="text" placeholder="e.g., MATH">
-            </div>
-        </div>
-        <div class="students-form-container">
-            <div class="card-students">
-                <h2>Students</h2>
-                <div class="card-students-grid">
-                    <!-- students last name -->
-                     <h4>Last Name</h4>
-                    <!-- student first name -->
-                     <h4>First Name</h4>
-                    <!-- student middle name (optiona) -->
-                     <h4>Middle Name (Optional)</h4>
-                    <!-- student age -->
-                     <h4>Age</h4>
-                </div>
-                    <div class="card-students-grid">
-                    <!-- input student last name -->
-                     <input type="text">
-                    <!-- input student first name -->
-                     <input type="text">
-                    <!-- input student middle name (optiona) -->
-                     <input type="text">
-                    <!-- input student age -->
-                     <input type="text">
-                </div>
-            </div>
-            <div class="add-btn">
-                <button>+ Add</button>
-            </div>
+        <div class="navbar_right">
+          <a href="/frontend/index.html" class="nav-button tooltip-container">
+            Back to Dashboard
+          </a>
         </div>
       </div>
-</body>
+    </div>
+
+    <div class="page-container">
+      <div class="section-form-container">
+        <div class="card">
+          <h2>Section</h2>
+          <div class="tooltip-container">
+            <h4>Section Name</h4>
+          </div>
+          <input
+            type="text"
+            placeholder="e.g., Section A"
+            title="Enter section name"
+          />
+        </div>
+        <div class="card">
+          <h2>Subject</h2>
+          <div class="tooltip-container">
+            <h4>Subject Name</h4>
+          </div>
+          <input
+            type="text"
+            placeholder="e.g., MATH"
+            title="Enter subject name"
+          />
+        </div>
+      </div>
+
+      <div class="students-form-container">
+        <div class="card-students">
+          <h2>Students</h2>
+
+          <!-- Header -->
+          <div class="card-students-header">
+            <div class="header-item tooltip-container">Last Name</div>
+            <div class="header-item tooltip-container">First Name</div>
+            <div class="header-item tooltip-container">
+              Middle Name (Optional)
+            </div>
+            <div class="header-item age-header tooltip-container">Age</div>
+            <div class="header-item"></div>
+          </div>
+
+          <!-- Student Rows Container -->
+          <div id="student-rows-container">
+            <div class="student-row default-row">
+              <input
+                type="text"
+                placeholder="e.g., Dela Cruz"
+                required
+                title="Enter student's last name"
+              />
+              <input
+                type="text"
+                placeholder="e.g., Juan"
+                required
+                title="Enter student's first name"
+              />
+              <input
+                type="text"
+                placeholder="e.g., Reyes"
+                title="Enter student's middle name (optional)"
+              />
+              <input
+                type="number"
+                placeholder="16"
+                class="age-input"
+                min="1"
+                max="99"
+                required
+                title="Enter student's age (1-99)"
+              />
+              <div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add Button Container -->
+        <div class="add-btn-container">
+          <button class="add-btn tooltip-container" id="add-student-btn">
+            <span class="plus-icon">+</span>
+            <span class="tooltip tooltip-left">Add another student</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/add_section.js"></script>
+  </body>
 </html>
