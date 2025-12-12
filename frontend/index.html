@@ -3,7 +3,6 @@
 <head>
     <link rel="stylesheet" href="css/dashboard.css">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <!-- Logo Link -->
     <link rel="shortcut icon" href="public/favicon.ico" type="image/x-icon">
@@ -12,43 +11,71 @@
 </head>
 <body>
 <!-- Sidebar -->
-<div class="sidebar">
-    <!-- User Profile -->
-    <div class="profile">   
-        <img src="public/images/man.png">
-        <p class="username">Harvin</p>
+<aside class="sidebar" role="navigation" aria-label="Main Navigation">
+    <!-- Sidebar Header -->
+    <div class="p-sidebar-header">
+        <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle Sidebar" aria-expanded="true">
+            <img src="public/images/gwc-logo.png" alt="GWC Logo" class="sidebar-icon">
+            <span class="tooltip" id="tooltip">Expand Sidebar</span>
+        </button>
+        <button class="collapse-btn" id="collapseBtn" aria-label="Collapse Sidebar" style="display: none;">
+            <img src="public/images/sidebar.png" alt="Collapse" class="collapse-icon">
+        </button>
     </div>
-    <!-- Menu Icons -->
-     <div class="menu-icons">
-        <div class="icon"><img src="public/images/home.png"></div>
-        <div class="icon"><img src="public/images/file.png"></div>
-     </div>
-</div>
-<!-- navBar1 and navBar2 container -->
- <div class="navbars-container">
-        <!--navBar1-->
-    <div class="navBar1">
-        <div class="navBar1_left">
-            <img src="public/images/gwc_logo.jpg" class="logo" alt="Logo">
-            <div>
-                <h1>
-                    |
-                </h1>
+    
+    <!-- Navigation Menu -->
+    <nav class="menu" role="menubar" aria-label="Navigation Menu">
+        <a href="index.html" class="menu-item active" role="menuitem" aria-current="page">
+            <img src="public/images/home.png" alt="Dashboard Icon">
+            <span class="menu-label">Dashboard</span>
+        </a>
+        <a href="#students" class="menu-item" role="menuitem">
+            <img src="public/images/students.png" alt="Students Icon">
+            <span class="menu-label">Students</span>
+        </a>
+        <a href="#performance" class="menu-item" role="menuitem">
+            <img src="public/images/performance.png" alt="Performance Icon">
+            <span class="menu-label">Performance</span>
+        </a>
+        <a href="#settings" class="menu-item" role="menuitem">
+            <img src="public/images/settings.png" alt="Settings Icon">
+            <span class="menu-label">Settings</span>
+        </a>
+    </nav>
+    
+    <!-- Sidebar Footer with User Profile -->
+    <div class="sidebar-footer">
+        <button class="profile-footer" id="profileBtn" role="complementary" aria-label="User Profile">
+            <img src="public/images/user.png" alt="User Avatar" class="profile-avatar">
+            <div class="profile-info">
+                <p class="username">Harvin</p>
             </div>
+        </button>
+        <button class="logout-btn" id="logoutBtn" aria-label="Logout" style="display: none;">
+            <img src="public/images/logout.png" alt="Logout Icon">
+            <span class="menu-label">Logout</span>
+        </button>
+    </div>
+</aside>
+<!-- Header and Navigation Inner container -->
+ <div class="navbars-container">
+        <!--Header Content-->
+    <div class="p-header-content">
+        <div class="p-header-content_left">
             <h1>Class Performance Tracking Dashboard</h1>
         </div>
-        <div class="navBar1_right">
+        <div class="p-header-content_right">
             Data Last Updated on | 1st Jan 2025
         </div>
     </div>
-    <!--navBar2-->
-    <div class="navBar2">
-        <div class="navBar2_left">
+    <!--Navigation Inner-->
+    <div class="p-nav-inner">
+        <div class="p-nav-inner_left">
             <h4>
                 Total Students <span class="colon">:</span><span id="total_number_students" class="total_number_students"></span>
             </h4>
         </div>
-        <div class="navBar2_right">
+        <div class="p-nav-inner_right">
             <label for="classSelect">Select Set:</label>
             <select id="classSelect" name="classSelect" class="custom-select">
                 <option value="">--Choose Section--</option>
@@ -61,7 +88,7 @@
     </div>
  </div>
 <!-- Average Grade View and Attendace Rate Container -->
- <div class="container">
+ <div class="p-body-inner">
     <!-- Average Grade View -->
     <div class="card">
         <h2>Average Grade view</h2>
@@ -134,6 +161,7 @@
     </div>
  </div>
 
+ <script src="js/sidebar.js"></script>
  <script src="js/api.js"></script>
  <script src="js/dashboard.js"></script>
 </body>

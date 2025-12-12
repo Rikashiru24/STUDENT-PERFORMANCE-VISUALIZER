@@ -1,70 +1,415 @@
-body {
-    margin-top: 130px;
+* {
+    box-sizing: border-box;
 }
 
-/* Sidebar */
+body {
+    margin: 0;
+    padding: 0;
+    margin-left: 250px;
+    margin-top: 130px;
+    transition: margin-left 0.3s ease;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+body.sidebar-collapsed {
+    margin-left: 70px;
+}
+
+/* Sidebar in Collapsed State */
+body.sidebar-collapsed .sidebar {
+    width: 70px;
+}
+
+body.sidebar-collapsed .p-sidebar-header {
+    width: 70px;
+    justify-content: center;
+}
+
+body.sidebar-collapsed .sidebar-toggle {
+    flex: none;
+    width: 70px;
+    display: inline-flex;
+}
+
+body.sidebar-collapsed .collapse-btn {
+    display: none !important;
+}
+
+/* ===== SIDEBAR STYLES ===== */
 .sidebar {
-    width: 50px;
+    width: 250px;
     background: #dbdbdb;
-    height: 100vh;
+    height: 100dvh;
     position: fixed;
     top: 0;
     left: 0;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding-top: 15px;
-    border-radius: 10px;
-    border: 2px solid rgb(244, 244, 244);
+    padding: 0;
+    border: none;
+    z-index: 1001;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    transition: width 0.3s ease;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
+/* Sidebar Header Section */
+.p-sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 70px;
+    border-bottom: 1px solid #c0c0c0;
+    padding: 0;
+    gap: 0;
+    z-index: 1002;
+    flex-shrink: 0;
+}
+
+/* Sidebar Toggle Button */
+.sidebar-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 70px;
+    height: 100%;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    transition: background-color 0.3s ease;
+    position: relative;
+}
+
+.sidebar-toggle:hover {
+    background: #c5c5c5;
+}
+
+.sidebar-icon {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+/* Tooltip Styles */
+.tooltip {
+    position: absolute;
+    right: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-right: 12px;
+    background: #333;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    pointer-events: none;
+    z-index: 1003;
+}
+
+.tooltip::after {
+    content: '';
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 5px solid transparent;
+    border-left-color: #333;
+}
+
+/* Show tooltip only in collapsed mode on hover */
+body.sidebar-collapsed .sidebar-toggle:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Collapse Button (Right Side, Only in Expanded Mode) */
+.collapse-btn {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 70px;
+    height: 100%;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.collapse-btn:hover {
+    background: #c5c5c5;
+}
+
+.collapse-icon {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+/* User Profile Section */
 .sidebar .profile {
     text-align: center;
-    margin-bottom: 20px;
+    padding: 25px 20px;
+    border-bottom: 1px solid #c0c0c0;
+    margin: 0;
 }
-.sidebar .profile img {
-    width: 35px;
-    height: 35px;
+
+.sidebar .profile .profile-avatar {
+    width: 50px;
+    height: 50px;
     object-fit: cover;
     border-radius: 50%;
-    border: 2px solid white;
+    border: 3px solid #333;
     display: block;
-    margin: auto;
+    margin: 0 auto 12px;
+    transition: transform 0.3s ease;
 }
+
 .sidebar .profile .username {
-    color: white;
-    font-size: 12px;
-    margin-top: 5px;
+    color: #333;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+    word-break: break-word;
 }
-.sidebar .menu-icons {
+
+/* Navigation Menu */
+.sidebar .menu {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 25px;
-    margin-top: 20px;
+    padding: 8px 0;
+    gap: 0;
+    list-style: none;
+    margin: 0;
 }
-.sidebar .menu-icons .icon {
+
+.sidebar .menu-item {
     display: flex;
-    justify-content: center;
     align-items: center;
-}
-.sidebar .menu-icons .icon img {
+    gap: 15px;
+    padding: 20px;
+    color: #555;
+    text-decoration: none;
+    transition: all 0.3s ease;
     cursor: pointer;
-    width: 24px;   
-    height: 24px;
+    position: relative;
+    border-left: 3px solid transparent;
+}
+
+.sidebar .menu-item:hover {
+    background: #c5c5c5;
+    color: #000;
+}
+
+.sidebar .menu-item.active {
+    background: #b0b0b0;
+    color: #000;
+    border-left-color: #FF9800;
+    font-weight: 600;
+}
+
+/* Hide active indicator in collapsed mode */
+body.sidebar-collapsed .sidebar .menu-item.active {
+    background: transparent;
+    border-left-color: transparent;
+}
+
+/* Show hover effect for active menu item in collapsed mode */
+body.sidebar-collapsed .sidebar .menu-item.active:hover {
+    background: #b0b0b0;
+    border-left-color: #FF9800;
+}
+
+.sidebar .menu-item img {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.sidebar .menu-label {
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Sidebar Footer */
+.sidebar-footer {
+    padding: 20px;
+    border-top: 1px solid #c0c0c0;
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    flex-shrink: 0;
+}
+
+/* Sidebar Footer in Collapsed Mode */
+body.sidebar-collapsed .sidebar-footer {
+    padding: 10px;
+    gap: 10px;
+    width: 70px;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-footer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 6px;
+}
+
+.profile-footer:hover {
+    background: #c5c5c5;
+}
+
+/* Profile Footer in Collapsed Mode */
+body.sidebar-collapsed .profile-footer {
+    width: 50px;
+    padding: 8px;
+    justify-content: center;
+}
+
+.profile-footer .profile-avatar {
+    width: 45px;
+    height: 45px;
+    min-width: 45px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #333;
+    transition: transform 0.3s ease;
+}
+
+/* Profile Avatar in Collapsed Mode */
+body.sidebar-collapsed .profile-footer .profile-avatar {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+}
+
+.profile-info {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-align: left;
+}
+
+/* Hide Profile Info in Collapsed Mode */
+body.sidebar-collapsed .profile-info {
+    display: none;
+}
+
+.profile-footer .username {
+    color: #333;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    padding: 12px 15px;
+    background: #c5c5c5;
+    color: #333;
+    border: 1px solid #b0b0b0;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    margin: 0;
+}
+
+.logout-btn:hover {
+    background: #FF9800;
+    border-color: #FF9800;
+    color: white;
+}
+
+/* Logout Button in Collapsed Mode */
+body.sidebar-collapsed .logout-btn {
+    width: 50px;
+    padding: 8px;
+    gap: 0;
+    border: none;
+    background: #c5c5c5;
+    justify-content: center;
+}
+
+.logout-btn img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+/* Hide logout label in collapsed mode */
+body.sidebar-collapsed .logout-btn .menu-label {
+    display: none;
+}
+
+/* Scrollbar Styling */
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: #dbdbdb;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: #999;
+    border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: #666;
 }
 
 /* Main Content Container */
 .navbars-container {
     position: fixed; 
-    top: 1px;
-    left: 0;
-    width: 100%;       
+    top: 0;
+    left: 250px;
+    right: 0;
+    width: calc(100% - 250px);
     z-index: 1000;
     padding-right: 25px;
-    padding-left: 55px;
+    padding-left: 25px;
     box-sizing: border-box;
+    transition: left 0.3s ease, width 0.3s ease;
 }
-.navBar1 {
+
+body.sidebar-collapsed .navbars-container {
+    left: 70px;
+    width: calc(100% - 70px);
+}
+.p-header-content {
     display: flex;
     justify-content: space-between; 
     align-items: center;
@@ -75,32 +420,26 @@ body {
     border-radius: 10px 10px 0 0;
 }
 
-.navBar1 .navBar1_left {
+.p-header-content .p-header-content_left {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.navBar1 .logo {
-    width: 70px;
-    height: 70px;
-    object-fit: contain;
-}
-
-.navBar1 h1 {
+.p-header-content h1 {
     margin: 0;
     font-size: 22px;
 }
 
-.navBar1 .navBar1_right {
+.p-header-content .p-header-content_right {
     color: white;
     font-size: 14px;
     opacity: 0.8;
     background-color: rgb(13, 7, 106);
     padding: 8px;
 }
-/*navBar2*/
-.navBar2 {        
+/*Navigation Inner*/
+.p-nav-inner {        
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -109,7 +448,7 @@ body {
     border-radius: 0 0 10px 10px;
 }
 
-.navBar2_left h4 {
+.p-nav-inner_left h4 {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -117,7 +456,7 @@ body {
     margin: 0;
 }
 
-.navBar2_right {
+.p-nav-inner_right {
     padding: 5px 25px;
 }
 
@@ -166,11 +505,17 @@ body {
 }
 
 /* -------------------------------- */
-.container {
+.p-body-inner {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
-    padding: 20px 20px 20px 50px;
+    padding: 20px;
+    margin-left: 0;
+    transition: margin-left 0.3s ease;
+}
+
+body.sidebar-collapsed .p-body-inner {
+    margin-left: 0;
 }
 
 
