@@ -10,6 +10,17 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
 </head>
 <body>
+<script>
+    (function() {
+        try {
+            if (localStorage.getItem('sidebarCollapsed') === 'true') {
+                document.body.classList.add('sidebar-collapsed');
+            }
+        } catch (e) {
+            console.warn('Sidebar state unavailable:', e);
+        }
+    })();
+</script>
 <!-- Sidebar -->
 <aside class="sidebar" role="navigation" aria-label="Main Navigation">
     <!-- Sidebar Header -->

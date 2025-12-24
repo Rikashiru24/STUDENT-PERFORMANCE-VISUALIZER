@@ -4,8 +4,16 @@
  * Shows tooltip on hover in collapsed mode
  */
 
+const SIDEBAR_STORAGE_KEY = 'sidebarCollapsed';
+const persistedCollapsedState = localStorage.getItem(SIDEBAR_STORAGE_KEY) === 'true';
+
+// Apply persisted state immediately to prevent a flash of the expanded sidebar on reload
+if (persistedCollapsedState) {
+    document.body.classList.add('sidebar-collapsed');
+}
+
 class SidebarManager {
-    constructor() {
+    constructor(initialCollapsed = false) {
         this.sidebar = document.querySelector('.sidebar');
         this.sidebarHeader = document.querySelector('.p-sidebar-header');
         this.toggleBtn = document.getElementById('sidebarToggle');
@@ -13,15 +21,15 @@ class SidebarManager {
         this.tooltip = document.getElementById('tooltip');
         this.profileBtn = document.getElementById('profileBtn');
         this.logoutBtn = document.getElementById('logoutBtn');
-        this.storageKey = 'sidebarCollapsed';
+        this.storageKey = SIDEBAR_STORAGE_KEY;
         
-        this.isCollapsed = false;
+        this.isCollapsed = initialCollapsed;
         this.init();
     }
 
     init() {
         // Load sidebar state from localStorage
-        this.isCollapsed = localStorage.getItem(this.storageKey) === 'true';
+        this.isCollapsed = localStorage.getItem(this.storageKey) === 'true' || this.isCollapsed;
         if (this.isCollapsed) {
             this.collapse();
         } else {
@@ -214,17 +222,21 @@ class SidebarManager {
     }
 }
 
-// Initialize sidebar manager when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    const sidebarManager = new SidebarManager();
-});
+// Initialize sidebar manager as soon as the DOM is ready
+const initSidebar = () => new SidebarManager(persistedCollapsedState);
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSidebar);
+} else {
+    initSidebar();
+}
 
 // Handle responsive behavior
 window.addEventListener('resize', () => {
     if (window.innerWidth <= 768) {
         document.body.classList.add('sidebar-collapsed');
     } else {
-        const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+        const isCollapsed = localStorage.getItem(SIDEBAR_STORAGE_KEY) === 'true';
         if (!isCollapsed) {
             document.body.classList.remove('sidebar-collapsed');
         }
